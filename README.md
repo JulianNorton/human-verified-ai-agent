@@ -42,7 +42,9 @@ This showcase demonstrates a **Google A2A (Agent-to-Agent) protocol** implementa
 - **ANS (Agent Name Service)**: Each agent implements secure naming following the [OWASP ANS v1.0 standard](https://genai.owasp.org/resource/agent-name-service-ans-for-secure-al-agent-discovery-v1-0/) for structured agent identification. The agents use hierarchical names like `forecast.weather.v1.human-security.com` and `planner.trip.v1.human-security.com` to enable secure agent discovery and authentication. This naming system provides a DNS-inspired framework for AI agent identity management that scales across distributed systems.
 
 **Demo Key Management:**
-This showcase is designed to work out-of-the-box using demonstration key pairs. Each agent has its own private key in the `keys/` directory, with corresponding public keys pre-configured on HUMAN's registry. This approach allows you to immediately experience the multi-agent HTTP Message Signatures protocol in action without needing to set up your own certificate authority or key management infrastructure.
+This showcase is designed to work out-of-the-box using demonstration key pairs. Each agent has its own private key in the `showcases/examples/keys/` directory, with corresponding public keys pre-configured on HUMAN's registry. This approach allows you to immediately experience the multi-agent HTTP Message Signatures protocol in action without needing to set up your own certificate authority or key management infrastructure.
+
+**WARNING: Example keys only. Do not use in production. These keys are publicly committed and shared; generate and securely store your own keys for any real deployment.**
 
 **Why this approach is necessary for the demo:**
 - No agent registry or certificate authority currently exists in production for this protocol
@@ -51,7 +53,7 @@ This showcase is designed to work out-of-the-box using demonstration key pairs. 
 
 In a production environment, each agent would have its own unique key pair issued through a proper certificate authority, but for learning and demonstration purposes, these demo key pairs provide the simplest path to understanding the architecture.
 
-**⚠️ Important Note:** This is a demonstration project designed for learning and evaluation purposes. While the cryptographic implementations are production-ready, the key management and agent registry components are simplified for educational use.
+**⚠️ Important Note:** This is a demonstration project designed for learning and evaluation purposes. While the cryptographic implementations are production-ready, the key management and agent registry components are simplified for educational use. The keys under `showcases/examples/keys/` are example-only and must never be used in production.
 
 ### For Commercial AI Agent Companies
 
@@ -182,17 +184,18 @@ human-verified-ai-agent/
 ├── agent_key_manager.py         # Core key management infrastructure
 ├── request_signer.py            # Core HTTP Message Signatures infrastructure
 ├── request_orchestrator.py      # Core request orchestration infrastructure
-├── keys/                        # Individual agent JWK key pairs
-│   ├── private_ed25519_pem_llm_agent
-│   ├── private_ed25519_pem_weather_agent
-│   ├── private_ed25519_pem_trip_agent
-│   └── [public keys with key_id filenames]
 └── showcases/                   # Multi-agent showcase implementation
     ├── a2a_showcase.py          # Main A2A demo entry point
     ├── agents/                  # Agent implementations
     │   ├── llm_agent.py         # LLM orchestrator agent
     │   ├── weather_agent.py     # Weather information agent
     │   └── trip_agent.py        # Attractions/trip planning agent
+    ├── examples/                # Example assets for demos
+    │   └── keys/                # Example agent JWK key pairs (demo only)
+    │       ├── private_ed25519_pem_llm_agent
+    │       ├── private_ed25519_pem_weather_agent
+    │       ├── private_ed25519_pem_trip_agent
+    │       └── [public keys with key_id filenames]
     └── utils/                   # Showcase utilities
         ├── agent_colors.py      # Agent output formatting
         ├── request_gateway.py   # Request routing and validation
@@ -222,9 +225,9 @@ human-verified-ai-agent/
 
 The system generates individual keys for each agent using the core `agent_key_manager.py` infrastructure:
 
-- **LLM Agent**: `keys/9i2hRtJ6sUUO2fK1ZJyXdUGJK1kwI1wVRoe9VDhX4yY` (JWK format)
-- **Weather Agent**: `keys/aAVQ596pKliWDfyo89RNTromrwqQMyD45YI36ldcCeo` (JWK format)  
-- **Attractions Agent**: `keys/DTNGykza-ch_trY8qfZwXRojdNa4R06CtC_ixX0VwuE` (JWK format)
+- **LLM Agent**: `showcases/examples/keys/9i2hRtJ6sUUO2fK1ZJyXdUGJK1kwI1wVRoe9VDhX4yY` (JWK format)
+- **Weather Agent**: `showcases/examples/keys/aAVQ596pKliWDfyo89RNTromrwqQMyD45YI36ldcCeo` (JWK format)  
+- **Attractions Agent**: `showcases/examples/keys/DTNGykza-ch_trY8qfZwXRojdNa4R06CtC_ixX0VwuE` (JWK format)
 
 Each key file contains the private key in JWK format, with the filename being the key_id (JWK thumbprint). The corresponding public keys are registered with HUMAN's verification service using the same key_id for identification.
 
@@ -307,7 +310,7 @@ This implementation features a **professional, scalable architecture** with clea
 - Check that the `.env` file is properly configured with `GOOGLE_API_KEY`
 
 **Agent Communication Errors:**
-- Verify that all agent keys are present in the `keys/` directory
+- Verify that all agent keys are present in the `showcases/examples/keys/` directory
 - Check that the verifier service is accessible via the configured `AGENT_VERIFIER_ADDRESS`
 
 ## Contributing
